@@ -96,14 +96,14 @@ nohup: ignoring input and appending output to 'nohup.out'
 
 ### Learning Algorithm
 
-For this Project I used the standard DQN. For network arctitecture, a simple target network was used to prevent the model from chasing "moving target" Q values, and an experience replay that was sampled randomly to further learn from previous action state combinations. The neural networks themselves were rudimentary at best, they are 3 layer fully connected linear layers using rectified linear unit activation functions. For hyperparameters I used the following:
+For this Project I used the a Deep Deterministic Policy Gradient (e.g. DDPG) which is well suited for reinforcement learning problems in continuous spaces. DDPG is an pseudo-actor critic model that differs from your standard actor critic model in that the critic is used to approximate the maximizer over the Q values for the next state instead of a learned baseline. The actor approximates the optimal policy deterministically, which is then maximized by the critic. For network arctitecture, a simple target network was used to prevent the model from chasing "moving target" values, and an experience replay that was sampled randomly to further learn from previous action state combinations very similarly to the DQN algorithm used in the banana navigation project. The neural networks themselves were rudimentary at best, they are 3 layer fully connected linear layers using rectified linear unit activation functions and batch normalization on the first layer of the network to minimize internal covariate shift. For hyperparameters I used the following:
 
 | Name                     |  value                   |
 :-------------------------:|:-------------------------:
  Buffer Size               |  1e6
  Batch Size                | 128
  Initial Epsilon           | 1.0
- Minimum Epsilon           | 0.01
+ Minimum Epsilon           | 0.2
  Epsilon Decay             | 1e-6
  max number of episodes    | 2000, actual: ~180
  max timesteps per episode | 1000
@@ -114,8 +114,6 @@ For this Project I used the standard DQN. For network arctitecture, a simple tar
  network update rate       | every 20 episodes
  number of network updates | 10 updates
 
-
-I regret using this algorithm because it burned up all of my workspace GPU time, and cost me about a day of compute time on AWS. I knew the oscillations would be attrocious; However, I did not account for the compute time required to train a DQN. I [read](https://medium.com/@parsa_h_m/deep-reinforcement-learning-dqn-double-dqn-dueling-dqn-noisy-dqn-and-dqn-with-prioritized-551f621a9823) that there were far fewer oscillations with the double DQN and the dueling DQN, but they did not as effectively maximize the Q values for which reason I stuck with the DQN. 
 
 ###  Plot of Rewards
 
